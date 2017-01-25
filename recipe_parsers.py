@@ -12,6 +12,19 @@ class BaseRecipeParser:
 
 
 class SimpleRecipeParser(BaseRecipeParser):
+    FRACTIONAL_QUANTITIES = {
+        '1/2': '0.5',
+        '1/4': '0.25',
+        '3/4': '0.75',
+        '1/3': '0.33',
+        '2/3': '0.66',
+        '½': '0.5',
+        '¼': '0.25',
+        '¾': '0.75',
+        '⅓': '0.33',
+        '⅔': '0.66'
+    }
+
     def parse(self, recipe_text):
         ingredients_info = []
         ingredients_str = recipe_text.split('\n')
@@ -25,15 +38,16 @@ class SimpleRecipeParser(BaseRecipeParser):
         tokens = [token.strip() for token in ingredient_str.split('-')]
         if len(tokens) < 2:
             return
-        ingredient_name = self.get_ingredient_name('-'.join(tokens[:-1]))
-        quantity = self.get_absolute_quantity(tokens[-1])
+        ingredient_name = self._get_ingredient_name('-'.join(tokens[:-1]))
+        quantity = self._get_absolute_quantity(tokens[-1])
         return {'name': ingredient_name, 'quantity': quantity}
 
-    def get_ingredient_name(self, ingredient_name_str):
+    def _get_ingredient_name(self, ingredient_name_str):
         # TODO: We need to improve this by dropping meaningless characters.
         return ingredient_name_str
 
-    def get_absolute_quantity(self, quantity_str):
+    def _get_absolute_quantity(self, quantity_str):
+        quantity_str = self._prepare_quantity_str(quantity_str)
         tokens = [token.strip() for token in quantity_str.split(' ')]
         quantity = 0
         measure = None
@@ -51,6 +65,12 @@ class SimpleRecipeParser(BaseRecipeParser):
         if quantity and measure:
             return quantity * NAME_MAP[measure]['value']
         return 0
+
+    def _prepare_quantity_str(self, quantity_str):
+        for fractional_quantity, quantity in self.FRACTIONAL_QUANTITIES.items():
+            print fractional_quantity, quantity
+            quantity_str = quantity_str.replace(fractional_quantity, quantity)
+        return quantity_str
 
 
 recipes = [
@@ -70,4 +90,4 @@ Cumin seeds - ¼ tsp
 Coriander leaves - for garnishing"""
 ]
 parser = SimpleRecipeParser()
-print parser.parse(recipes[0])
+# print parser.parse(recipes[0])
