@@ -27,7 +27,27 @@ $('#recipie-text').submit(function(e) {
    var url = '/recipie/recipie_to_nut';
 
    $.post(url, {'text' : text}, function(response) {
+       var response = JSON.parse(response);
        console.log(response);
-       $('#nutritional-val-container').html(response);
+       //$('#nutritional-val-container').html(response);
+       var missed = response['missed_ingredients'];
+       //debugger;
+       $('#missed-ingredients').hide();
+
+       if (missed) {
+        $('#missed-ingredients').show().html(missed);
+       }
+
+       var table = $('#nutrition-chart');
+       var template = '<tr><th>Nutrition (Per 100 gm)</th><th>Quantity</th></tr>'
+       for (i in response.nutritional_values) {
+           var value = response.nutritional_values[i];
+
+           value = Math.round(value * 100) / 100;
+           template += '<tr><td>' + i +'</td><td>' + value + '</td></tr>'
+       }
+       table.html(template);
+
+
    });
 });

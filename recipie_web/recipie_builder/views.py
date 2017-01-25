@@ -33,6 +33,11 @@ def recipie_to_nut(request):
     print "RECIPIE TO NUT ", txt
     parsed = parser.parse(txt.encode('utf-8'))
     print "PARSED ", parsed
-    processed, missed = aggregate_nuts(parsed['ingredients'])
+    processed, missed, sum_quantity = aggregate_nuts(parsed['ingredients'])
     # TODO
-    return HttpResponse(json.dumps({"nutritional_values" : processed, "missed_ingredients" : missed}))
+    processed_per_100 = {}
+    for k,v in processed.items():
+        processed_per_100[k] =(v/sum_quantity)*100
+
+
+    return HttpResponse(json.dumps({"nutritional_values" : processed_per_100, "missed_ingredients" : ",".join(missed)}))
