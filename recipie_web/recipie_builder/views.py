@@ -40,4 +40,4 @@ def recipie_to_nut(request):
         processed_per_100[k] =(v/sum_quantity)*100
 
 
-    return HttpResponse(json.dumps({"nutritional_values" : processed_per_100, "missed_ingredients" : ",".join(missed)}))
+    return HttpResponse(json.dumps({"nutritional_values" : processed_per_100, "missed_ingredients" : ",".join(missed), "ingredients" : parsed}))

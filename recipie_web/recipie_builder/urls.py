@@ -1,8 +1,15 @@
 from __future__ import absolute_import, unicode_literals
 
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 from . import views
+
+from tastypie.api import Api
+from recipie_builder.api import FoodResource, IngredientResource
+
+v1_api = Api(api_name='v1')
+v1_api.register(FoodResource())
+v1_api.register(IngredientResource())
 
 urlpatterns = [
     url(
@@ -15,20 +22,6 @@ urlpatterns = [
         view=views.recipie_to_nut,
         name='recipie_to_nut'
     ),
+    url(r'^api/', include(v1_api.urls)),
 
-    # url(
-    #     regex=r'^~redirect/$',
-    #     view=views.UserRedirectView.as_view(),
-    #     name='redirect'
-    # ),
-    # url(
-    #     regex=r'^(?P<username>[\w.@+-]+)/$',
-    #     view=views.UserDetailView.as_view(),
-    #     name='detail'
-    # ),
-    # url(
-    #     regex=r'^~update/$',
-    #     view=views.UserUpdateView.as_view(),
-    #     name='update'
-    # ),
 ]

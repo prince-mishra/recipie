@@ -1,18 +1,22 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-  <div style="float: left;">
+  <div>
     <form name="recipie-text-form" id="recipie-text">
        {{ csrf_token }}
+      <input type="text" id="recipie-name">
       <textarea rows="10" style="width:500px" id="recipie-textarea"></textarea>
       <br />
       <input type="submit" id="recipie-text-submit">
+      <input type="submit" id="recipie-text-save" value="Save">
 
     </form>
   </div>
   <div id="missed-ingredients" style="border:1px solid red; display: none;"></div>
-  <table style="float: left; border: 1px solid green" id="nutrition-chart">
+<br>
+<table style="border: 1px solid green" id="nutrition-chart">
 
   </table>
-
+<br>
+  <span id="ingredients" style="border : 1px solid yellow;"></span>
 {% endblock content %}

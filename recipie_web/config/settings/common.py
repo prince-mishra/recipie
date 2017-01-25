@@ -34,6 +34,7 @@ DJANGO_APPS = (
 
     # Admin
     'django.contrib.admin',
+    'tastypie',
     'recipie_builder'
 )
 THIRD_PARTY_APPS = (

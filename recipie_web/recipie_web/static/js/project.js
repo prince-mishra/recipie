@@ -20,6 +20,52 @@ Issues with the above approach:
 */
 $('.form-group').removeClass('row');
 
+var ingredients = '';
+var nutritional_values = '';
+
+$('#recipie-text-save').click(function(e) {
+   e.preventDefault();
+   var foodName = $('#recipie-name').val(),
+       nutritionalValues = nutritional_values;
+
+   var data = {
+       'name' : foodName,
+       'nutritionals' : nutritionalValues
+   }
+   var ret = '';
+
+   $.ajax({
+      url:'/recipie/api/v1/food/?format=json',
+      type:"POST",
+      data:JSON.stringify(data),
+      contentType:"application/json; charset=utf-8",
+      dataType:"json",
+      success: function(response) {
+          foodId = response['id'];
+          ret += 'Food ID : ' + foodId;
+          $.each(ingredients, function (i, v) {
+              var ingData = {
+                  'name': v['name'],
+                  'food': {'pk': foodId},
+                  'quantity': v['quantity']
+              }
+
+              $.ajax({
+                  url: '/recipie/api/v1/ingredient/?format=json',
+                  type: "POST",
+                  data: JSON.stringify(ingData),
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function (response) {
+                      ret += ' ingredient id : ' + response.id;
+                      console.log(response);
+                  }
+              });
+          });
+      }});
+console.log(ret);
+});
+
 $('#recipie-text').submit(function(e) {
    e.preventDefault();
    var text = $('#recipie-textarea').val();
@@ -37,7 +83,8 @@ $('#recipie-text').submit(function(e) {
        if (missed) {
         $('#missed-ingredients').show().html(missed);
        }
-
+        ingredients = response['ingredients']['ingredients'];
+       nutritional_values = response['nutritional_values'];
        var table = $('#nutrition-chart');
        var template = '<tr><th>Nutrition (Per 100 gm)</th><th>Quantity</th></tr>'
        for (i in response.nutritional_values) {
@@ -48,6 +95,6 @@ $('#recipie-text').submit(function(e) {
        }
        table.html(template);
 
-
+        $('#ingredients').text(JSON.stringify(nutritional_values));
    });
 });
