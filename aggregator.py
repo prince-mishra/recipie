@@ -13,12 +13,12 @@ def aggregate_nuts(components):
     for component in components:
         k = component['name']
         v = component['quantity']
+        nutritional_items = INGREDIENTS.get(k, {})
 
-        if v==0:
+        if not (v and nutritional_items):
             missed.append(k)
 
-        nutritional_items = INGREDIENTS.get(k, {})
-        for name,value in nutritional_items.items():
+        for name, value in nutritional_items.items():
             cur_value = value*v/100.0
             if uniques.get(name):
                 uniques[name] = uniques[name] + cur_value
