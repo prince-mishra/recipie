@@ -1,21 +1,16 @@
+import random
+
 INGREDIENTS_NV_MAP = {
-    'RICE' : {
-        'CARBS' : 100,
-        'PROTEIN' : 100,
-        'FAT' : 50
+    'RICE': {
+        'CARBS': 100,
+        'PROTEIN': 100,
+        'FAT': 50
     }
 }
 
 
-POSSIBLE_INGREDIENTS = [ 'RICE', 'DAL', 'BESAN', 'RAJMA', 'BROWN BREAD',
-                'FLOUR', 'TOMATO'
-]
-
+POSSIBLE_INGREDIENTS = ['RICE', 'DAL', 'BESAN', 'RAJMA', 'BROWN BREAD', 'FLOUR', 'TOMATO']
 POSSIBLE_NV = ['PROTEIN', 'FAT', 'CARB', 'VITAMINS']
-
-
-
-import random
 
 NUT_TABLE = {}
 for item in POSSIBLE_INGREDIENTS:
