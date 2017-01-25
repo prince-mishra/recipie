@@ -44,7 +44,7 @@ class SimpleRecipeParser(BaseRecipeParser):
 
     def _get_ingredient_name(self, ingredient_name_str):
         # TODO: We need to improve this by dropping meaningless characters.
-        return ingredient_name_str
+        return ingredient_name_str.lower()
 
     def _get_absolute_quantity(self, quantity_str):
         quantity_str = self._prepare_quantity_str(quantity_str)
@@ -59,7 +59,7 @@ class SimpleRecipeParser(BaseRecipeParser):
                 continue
         possible_measures = NAME_MAP.keys()
         for possible_measure in possible_measures:
-            if possible_measure in tokens:
+            if possible_measure in quantity_str:
                 measure = possible_measure
                 break
         if quantity and measure:
@@ -75,9 +75,9 @@ class SimpleRecipeParser(BaseRecipeParser):
 recipes = [
     """Red Kidney beans (Rajma) - 1 cup
 Onion - 1(finely minced)
-Tomato - 2 (crushed or pureed)
+Tomato - 50 gram (crushed or pureed)
 Ginger-garlic paste - 1 tsp
-Green chili - 1
+Green chili - 2 gram
 Turmeric - ¼ tsp
 Chilly powder - ½ tsp
 Coriander /dhania powder - 1 tsp
@@ -89,4 +89,4 @@ Cumin seeds - ¼ tsp
 Coriander leaves - for garnishing"""
 ]
 parser = SimpleRecipeParser()
-# print parser.parse(recipes[0])
+print parser.parse(recipes[0])
