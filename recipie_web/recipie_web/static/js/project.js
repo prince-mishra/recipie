@@ -19,3 +19,15 @@ Issues with the above approach:
 4. Undocumented: No mention in the documentation, or it's too hard for me to find
 */
 $('.form-group').removeClass('row');
+
+$('#recipie-text').submit(function(e) {
+   e.preventDefault();
+   var text = $('#recipie-textarea').val();
+
+   var url = '/recipie/recipie_to_nut';
+
+   $.post(url, {'text' : text}, function(response) {
+       console.log(response);
+       $('#nutritional-val-container').html(response);
+   });
+});
