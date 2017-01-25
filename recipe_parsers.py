@@ -89,4 +89,4 @@ Cumin seeds - ¼ tsp
 Coriander leaves - for garnishing"""
 ]
 parser = SimpleRecipeParser()
-print parser.parse(recipes[0])
+# print parser.parse(recipes[0])
