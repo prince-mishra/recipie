@@ -1,33 +1,30 @@
 """
 Given a list of components and their individual nutritional value, build an aggregated store
 """
+from sys import path
+path.append('/Users/mishraprince/work/scripts/healthifyme/recipie')
+
+from NUTRITION_VALUE_TABLE import INGREDIENTS
 
 def aggregate_nuts(components):
     uniques = {}
+    missed = []
+
     for component in components:
-        for k,v in component.items():
-            if uniques.get(k):
-                uniques[k] = uniques[k] + v
+        k = component['name']
+        v = component['quantity']
+
+        if v==0:
+            missed.append(k)
+
+        nutritional_items = INGREDIENTS.get(k, {})
+        for name,value in nutritional_items.items():
+            cur_value = value*v/100.0
+            if uniques.get(name):
+                uniques[name] = uniques[name] + cur_value
             else:
-                uniques[k] = v
+                uniques[name] = cur_value
+    return (uniques, missed)
 
-    return uniques
 
-def test_aggregate_nuts():
-    data = [
-        {
-            'proteins'  : 100,
-            'carbs'     : 200,
-            'fats'      : 300
-        },
-        {
-            'proteins': 99,
-            'carbs': 299,
-            'fats': 399
-        }
-    ]
-    print aggregate_nuts(data) == {
-        'fats' : 699, 'carbs' : 499, 'proteins' : 199
-    }
-
-test_aggregate_nuts()
+#test_aggregate_nuts()
