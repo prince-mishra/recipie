@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 
@@ -5,6 +8,14 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 import json
+
+from sys import path
+path.append('/Users/mishraprince/work/scripts/healthifyme/recipie')
+
+from recipe_parsers import SimpleRecipeParser
+from aggregator import aggregate_nuts
+
+parser = SimpleRecipeParser()
 
 # Create your views here.
 
@@ -18,18 +29,10 @@ def index(request):
 
 @csrf_exempt
 def recipie_to_nut(request):
-    txt = request.GET.get('text')
-    ret = [
-        {
-            'proteins'  : 100,
-            'carbs'     : 200,
-            'fats'      : 300
-        },
-        {
-            'proteins': 99,
-            'carbs': 299,
-            'fats': 399
-        }
-    ]
-
-    return HttpResponse(json.dumps(ret))
+    txt = request.POST.get('text')
+    print "RECIPIE TO NUT ", txt
+    parsed = parser.parse(txt.encode('utf-8'))
+    print "PARSED ", parsed
+    processed, missed = aggregate_nuts(parsed['ingredients'])
+    # TODO
+    return HttpResponse(json.dumps({"nutritional_values" : processed, "missed_ingredients" : missed}))
