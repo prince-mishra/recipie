@@ -68,7 +68,6 @@ class SimpleRecipeParser(BaseRecipeParser):
 
     def _prepare_quantity_str(self, quantity_str):
         for fractional_quantity, quantity in self.FRACTIONAL_QUANTITIES.items():
-            print fractional_quantity, quantity
             quantity_str = quantity_str.replace(fractional_quantity, quantity)
         return quantity_str
 
